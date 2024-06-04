@@ -40,7 +40,7 @@ $g_information_service_settings_Tematres = array(
     'url' => array(
         'formatType'  => FT_TEXT,
         'displayType' => DT_FIELD,
-        'default'     => 'https://ihoes.ideesculture.fr/tematres/vocab',
+        'default'     => '',
         'width'       => 90, 'height' => 1,
         'label'       => _t('Tematres service URL'),
         'description' => _t('URL of services.php to the specific vocabulary dir of Tematres. DO NOT include trailing slash index.php or services.php, only base address to the dir containing index.php.'),
@@ -87,8 +87,9 @@ class WLPlugInformationServiceTematres Extends BaseInformationServicePlugin Impl
 
         // support passing full tematres URLs
         //if(isURL($ps_search)) { $ps_search = self::getPageTitleFromURI($ps_search); }
-        $vs_url = caGetOption('url', $pa_settings, 'https://ihoes.ideesculture.fr/tematres/vocab');
-
+        $vs_url = caGetOption('url', $pa_settings, '');
+        $vs_url2 = $vs_url;
+        
         // readable version of get parameters
         $va_get_params = array(
             'task'   => 'search', // use search service as generator for page service
@@ -109,8 +110,10 @@ class WLPlugInformationServiceTematres Extends BaseInformationServicePlugin Impl
 
         foreach ($va_results as $va_result) {
             $va_return['results'][] = array(
-                'label' => $va_result['term_id'] . " – " . $va_result['string'],
-                'url'   => $vs_url . "/index.php?tema=" . $va_result['term_id'],
+//                'label' => $va_result['term_id'] . " – " . $va_result['string'],
+                'label' => $va_result['string']." (".$va_result['term_id'].")",
+//                'url'   => $vs_url . "/index.php?tema=" . $va_result['term_id'],
+                'url'   => $vs_url2 . "/index.php?tema=" . $va_result['term_id'],
                 'idno'  => $va_result['term_id'] * 1,
             );
         }
